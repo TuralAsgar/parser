@@ -19,15 +19,9 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        if (_db.Metas != null)
-        {
-            var metaList = _db.Metas.Include(meta=>meta.Reports).ToList();
-            return View(metaList);
-        }
-        
-        
-
-        return View(new List<Meta>());
+        if (_db.Metas == null) return View(new List<Meta>());
+        var metaList = _db.Metas.Include(meta => meta.Reports).ToList();
+        return View(metaList);
     }
 
     public async Task<IActionResult> Parse(IFormFile file)
@@ -35,6 +29,13 @@ public class HomeController : Controller
         var filePath = "";
         if (file.Length > 0)
         {
+            if (Path.GetExtension(file.FileName) != ".txt")
+            {
+                TempData["type"] = "error";
+                TempData["message"] = "Only plain text files can be parsed";
+                return RedirectToAction("Index", "Home");
+            }
+
             // full path to file in temp location
             filePath = Path.GetTempFileName();
             await using var stream = new FileStream(filePath, FileMode.Create);
@@ -127,6 +128,21 @@ public class HomeController : Controller
             }
         }
 
-        return Ok(new { filePath });
+        TempData["type"] = "success";
+        TempData["message"] = "The file successfully parsed and inserted into database";
+        return RedirectToAction("Index", "Home");
+    }
+
+    public IActionResult Reset()
+    {
+        _db.Database.ExecuteSqlRaw("TRUNCATE TABLE meta;TRUNCATE TABLE report;");
+        TempData["type"] = "success";
+        TempData["message"] = "Tables truncated successfuly";
+        return RedirectToAction("Index");
+    }
+
+    public IActionResult Requirement()
+    {
+        return View();
     }
 }

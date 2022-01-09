@@ -3,12 +3,60 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="row">
+
+@section Scripts
+{
+    @if (!string.IsNullOrEmpty((string?)TempData["message"]))
+    {
+        <script>
+            toastr["@TempData["type"]"]("@TempData["message"]") 
+        </script>
+    }
+
+    <script>
+    $(document).ready(function() {
+      
+        $('#truncate').submit(function(e) {
+            e.preventDefault();
+                Swal.fire({
+                icon:'warning',
+                  title: 'All the data will be deleted. Are you sure?',
+                  showDenyButton: true,
+                  confirmButtonText: 'Yes',
+                  denyButtonText: `No`,
+                }).then((result) => {
+                      if (result.isConfirmed) {
+                        Swal.fire('Deleting tables...', '', 'success')
+                        setTimeout(function (){
+                            e.target.submit();
+                        }, 1500)
+                      } else if (result.isDenied) {
+                        Swal.fire('No worries! Nothing deleted', '', 'info')
+                      }
+                })
+            });
+        
+    });
+    </script>
+}
+
+@if (Model.Count() != 0)
+{
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <form id="truncate" asp-controller="Home" asp-action="Reset">
+                <button type="submit" class="btn btn-danger">Delete data</button>
+            </form>
+        </div>
+    </div>
+}
+
+
+<div class="row mt-5">
     <div class="col-sm-3">
         <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Parse">
             <div class="form-group">
-                <label>Upload one or more files using this form:</label>
-                <input class="form-control mt-1" type="file" name="file"/>
+                <input class="form-control mt-1" type="file" name="file" accept="text/plain"/>
             </div>
             <div class="form-group mt-2">
                 <input class="form-control btn btn-info text-white" type="submit" value="Upload"/>
@@ -18,50 +66,64 @@
 </div>
 
 
-<div class="row">
-    <div class="col-sm-12">
-        <table>
-            <tr>
-                <td>
+@if (Model.Count() != 0)
+{
+    <div class="row">
+        <div class="col-sm-12">
+            <table>
+                <tr>
+                    <td>
 
-                    @foreach (var meta in Model)
-                    {
-                        <div class="mt-5">Financial Institution : @meta.Institution</div>
-                        <div>Date : @meta.Date</div>
-                        <div>File ID : @meta.FileId</div>
-                        <div>TransactionCurrency : @meta.TransactionCurrency</div>
-                        <div>ReconciliationCurrency : @meta.ReconciliationCurrency</div>
-                        <table class="table table-bordered mt-5">
-                            <tr>
-                                <td>Settlement Category</td>
-                                <td>Transaction Amount Credit</td>
-                                <td>Reconciliation Amount Credit</td>
-                                <td>Fee Amount Credit</td>
-                                <td>Transaction Amount Debit</td>
-                                <td>Reconciliation Amount Debit</td>
-                                <td>Fee Amount Debit</td>
-                                <td>Count Total</td>
-                                <td>Net Value</td>
-                            </tr>
-                            @foreach (var report in meta.Reports)
-                            {
-                                <tr>
-                                    <td>@report.Settlement</td>
-                                    <td class="text-center">@report.TransactionCredit</td>
-                                    <td class="text-center">@report.ReconciliationCredit</td>
-                                    <td class="text-center">@report.FeeCredit</td>
-                                    <td class="text-center">@report.TransactionDebit</td>
-                                    <td class="text-center">@report.ReconciliationDebit</td>
-                                    <td class="text-center">@report.FeeDebit</td>
-                                    <td class="text-center">@report.Count</td>
-                                    <td class="text-center">@report.Net</td>
+                        @foreach (var meta in Model)
+                        {
+                            <div class="mt-5"><strong>Financial Institution</strong> : @meta.Institution</div>
+                            <div><strong>Date</strong> : @meta.Date</div>
+                            <div><strong>File ID</strong> : @meta.FileId</div>
+                            <div><strong>TransactionCurrency</strong> : @meta.TransactionCurrency</div>
+                            <div><strong>ReconciliationCurrency</strong> : @meta.ReconciliationCurrency</div>
+                            <table class="table table-bordered mt-5">
+                                <tr class="fw-bold">
+                                    <td>Settlement Category</td>
+                                    <td>Transaction Amount Credit</td>
+                                    <td>Reconciliation Amount Credit</td>
+                                    <td>Fee Amount Credit</td>
+                                    <td>Transaction Amount Debit</td>
+                                    <td>Reconciliation Amount Debit</td>
+                                    <td>Fee Amount Debit</td>
+                                    <td>Count Total</td>
+                                    <td>Net Value</td>
                                 </tr>
-                            }
+                                @foreach (var report in meta.Reports)
+                                {
+                                    <tr>
+                                        <td>@report.Settlement</td>
+                                        <td class="text-center">@report.TransactionCredit</td>
+                                        <td class="text-center">@report.ReconciliationCredit</td>
+                                        <td class="text-center">@report.FeeCredit</td>
+                                        <td class="text-center">@report.TransactionDebit</td>
+                                        <td class="text-center">@report.ReconciliationDebit</td>
+                                        <td class="text-center">@report.FeeDebit</td>
+                                        <td class="text-center">@report.Count</td>
+                                        <td class="text-center">@report.Net</td>
+                                    </tr>
+                                }
+                                <tr class="fw-bold">
+                                    <td>Total</td>
+                                    <td class="text-center">@meta.Reports.Sum(i => i.TransactionCredit)</td>
+                                    <td class="text-center">@meta.Reports.Sum(i => i.ReconciliationCredit)</td>
+                                    <td class="text-center">@meta.Reports.Sum(i => i.FeeCredit)</td>
+                                    <td class="text-center">@meta.Reports.Sum(i => i.TransactionDebit)</td>
+                                    <td class="text-center">@meta.Reports.Sum(i => i.ReconciliationDebit)</td>
+                                    <td class="text-center">@meta.Reports.Sum(i => i.FeeDebit)</td>
+                                    <td class="text-center">@meta.Reports.Sum(i => i.Count)</td>
+                                    <td class="text-center">@meta.Reports.Sum(i => i.Net)</td>
+                                </tr>
 
-                        </table>
-                    }
-                </td>
-            </tr>
-        </table>
+                            </table>
+                        }
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
-</div>
+}

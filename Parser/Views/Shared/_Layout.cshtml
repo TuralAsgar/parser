@@ -6,13 +6,13 @@
     <title>@ViewData["Title"] - Parser</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/Parser.styles.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/lib/toastr/toastr.min.css">
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container-fluid">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Parser</a>
+            <a data-toggle="tooltip" data-placement="bottom" title="Author's personal website" target="_blank" href="https://www.turalasgar.com" class="navbar-brand">TuralAsgar.com</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -23,7 +23,10 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Index</a>
+                        <a  data-toggle="tooltip" data-placement="bottom" title="Technical requirements" class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Requirement">Requirements</a>
+                    </li>
+                    <li class="nav-item">
+                        <a data-toggle="tooltip" data-placement="bottom" title="This file has to be parsed" href="~/raw.txt" class="nav-link text-dark">File</a>
                     </li>
                 </ul>
             </div>
@@ -37,13 +40,21 @@
 </div>
 
 <footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2022 - Parser - <a asp-area="" asp-controller="Home" asp-action="Index">Index</a>
+    <div class="container mt-3">
+        &copy; 2022 - Tural Asgarov
     </div>
 </footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script >
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/lib/toastr/toastr.min.js"></script>
+<script src="~/lib/sweetalert2@11.js"></script>
+
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
