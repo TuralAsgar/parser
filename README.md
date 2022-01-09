@@ -23,17 +23,20 @@ Tapşırığı həll edib, 10.01.2022-ci il tarixində geri göndərməyiniz Siz
 
 ## Usage
 
-1. Clone repo `https://github.com/tural-esger/parser.git`
-2. Create a database called `parser` in SQL server
-3. Import `db.sql` into `parser` database
-4. Check connection string in `appsettings.json`
-5. Go to project directory (`cd Parser`)
-6. Restore dependencies `dotnet restore`
-7. Run application `dotnet run`
-8. Open localhost link in the browser
+1. Install dotnet 6 and Sql Server 2019
+2. Clone repo `https://github.com/tural-esger/parser.git`
+3. Create a database called `parser` in SQL server
+4. Import `db.sql` into `parser` database
+5. Check connection string in `appsettings.json`
+6. Go to project directory (`cd Parser`)
+7. Restore dependencies `dotnet restore`
+8. Run application `dotnet run`
+9. Open localhost link in the browser
 
 ### Optional
-If you don't want to install SQL server and import tables (step 2 and 3), you can use Docker
+If you don't want to install SQL server, you can use Docker
 
 1. Go to Docker/sql-server directory `cd ./Docker/sql-server`
 2. Run `docker compose up`
+3. Create a database called `parser` in SQL server
+4. Import `db.sql` into `parser` database
