@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Meta>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-sm-3">
+        <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Parse">
+            <div class="form-group">
+                <label>Upload one or more files using this form:</label>
+                <input class="form-control mt-1" type="file" name="file"/>
+            </div>
+            <div class="form-group mt-2">
+                <input class="form-control btn btn-info text-white" type="submit" value="Upload"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <table>
+            <tr>
+                <td>
+
+                    @foreach (var meta in Model)
+                    {
+                        <div class="mt-5">Financial Institution : @meta.Institution</div>
+                        <div>Date : @meta.Date</div>
+                        <div>File ID : @meta.FileId</div>
+                        <div>TransactionCurrency : @meta.TransactionCurrency</div>
+                        <div>ReconciliationCurrency : @meta.ReconciliationCurrency</div>
+                        <table class="table table-bordered mt-5">
+                            <tr>
+                                <td>Settlement Category</td>
+                                <td>Transaction Amount Credit</td>
+                                <td>Reconciliation Amount Credit</td>
+                                <td>Fee Amount Credit</td>
+                                <td>Transaction Amount Debit</td>
+                                <td>Reconciliation Amount Debit</td>
+                                <td>Fee Amount Debit</td>
+                                <td>Count Total</td>
+                                <td>Net Value</td>
+                            </tr>
+                            @foreach (var report in meta.Reports)
+                            {
+                                <tr>
+                                    <td>@report.Settlement</td>
+                                    <td class="text-center">@report.TransactionCredit</td>
+                                    <td class="text-center">@report.ReconciliationCredit</td>
+                                    <td class="text-center">@report.FeeCredit</td>
+                                    <td class="text-center">@report.TransactionDebit</td>
+                                    <td class="text-center">@report.ReconciliationDebit</td>
+                                    <td class="text-center">@report.FeeDebit</td>
+                                    <td class="text-center">@report.Count</td>
+                                    <td class="text-center">@report.Net</td>
+                                </tr>
+                            }
+
+                        </table>
+                    }
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
