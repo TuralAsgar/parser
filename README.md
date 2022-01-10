@@ -1,3 +1,7 @@
+# Watch
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/OCdVfvlbL6g/0.jpg)](https://www.youtube.com/watch?v=OCdVfvlbL6g)
+
 # Guide
 
 <details>
