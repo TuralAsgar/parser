@@ -28,7 +28,7 @@ Tapşırığı həll edib, 10.01.2022-ci il tarixində geri göndərməyiniz Siz
 ## Usage
 
 1. Install dotnet 6 and Sql Server 2019
-2. Clone repo `git clone https://github.com/tural-esger/parser.git`
+2. Clone repo `git clone https://github.com/TuralAsgar/parser.git`
 3. Create a database called `parser` in SQL server
 4. Import `db.sql` into `parser` database
 5. Check connection string in `appsettings.json`
